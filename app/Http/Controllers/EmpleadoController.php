@@ -19,12 +19,30 @@ class EmpleadoController extends Controller
     public function estadisticas (Request $Request)
     {
 
-        $masculino =  Empleado::where("genero","Masculino")->count();
-        $femenino =  Empleado::where("genero","Femenino")->count();
+        $masculino =  Empleado::where("genero","Masculino")->get();
+        $femenino =  Empleado::where("genero","Femenino")->get();
+        $problemas = Empleado::where("problemas_de_salud", "si")->get();
+        $nproblemas = Empleado::where("problemas_de_salud", "no")->get();
+        $becado = Empleado::where("becado", "si")->get();
+        $nbecado = Empleado::where("becado", "no")->get();
+        $mat = Empleado::where("horario", "matutino")->get();
+        $vesp = Empleado::where("horario", "vespertino")->get();
+        $aprobados = Empleado::where("calificacion_de_prepa", ">=", 7)->get();
+        $reprobados = Empleado::where("calificacion_de_prepa", "<=", 6)->get();
+
 
         return response([
-            'masculinos'=>$masculino,
-            'femeninos'=>$femenino,
+            'mesage'=> 'cuantos hay en la BD',
+            '¿Cuantos masculinos hay?'=>count($masculino),
+            '¿Cuantos femeninos hay?'=>count($femenino),
+            '¿Cuantos con problemas de salud?'=>count($problemas),
+            '¿Cuantos sin problemas hay?'=>count($problemas),
+            '¿Cuantos con beca hay?'=>count($becado),
+            '¿Cuantos sin becas hay?'=>count($nbecado),
+            '¿Cuantos en la mañana hay?'=>count($matutino),
+            '¿Cuantos en la tarde hay?'=>count($vespertino),
+            '¿Cuantos aprobados hay?'=>count($aprobados),
+            '¿ Cuantos reprobados hay?'=>count($reprobados),
         ]);
     }
 
@@ -67,7 +85,7 @@ class EmpleadoController extends Controller
     public function problemas (Request $Request)
     {
 
-        $nprobelmas =  Empleado::where("problemas_de_salud","No")->count();
+        $nproblemas =  Empleado::where("problemas_de_salud","No")->count();
         $problemas =  Empleado::where("problemas_de_salud","Si")->count();
 
         return response([
